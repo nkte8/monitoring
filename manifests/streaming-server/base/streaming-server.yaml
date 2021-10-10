@@ -19,6 +19,8 @@ spec:
           image: registry.neko.lab:5005/root/monitoring/streaming-server
           ports:
             - containerPort: 80
+          securityContext:
+            privileged: true
 ---
 apiVersion: v1
 kind: Service
