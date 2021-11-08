@@ -3,12 +3,11 @@ services:
   edge-client:
     image: registry.neko.lab:5005/root/monitoring/v4l2rtspserver
     container_name: edge-client
-    command: >
-      -W 640 -H 480 -F 30
+    command: -W 640 -H 480 -F 10
     ports:
       - 8554:8554
     devices:
-      - "/dev/video0:/dev/video0"
+      - /dev/video0
     restart: always
     privileged: true
     logging:
