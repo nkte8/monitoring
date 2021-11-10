@@ -1,4 +1,7 @@
 #!/bin/bash
+owner=`ls -ld | awk '{ print $3 }'`
+useradd -M -u ${owner} rstpusr
+
 counter=$((0))
 while [[ -e "/app/config.csv" ]]; do
     echo "read /app/config.csv" 
@@ -12,7 +15,7 @@ while [[ -e "/app/config.csv" ]]; do
     done
     if [[ ${DEV_NAME} != "" ]];then
         echo "DEV_NAME=$DEV_NAME, SEG_TIME=$SEG_TIME, FRAME_ROTATE=$FRAME_ROTATE"
-        touch ${DEV_NAME}.m3u8
+        su rstpusr -c "touch ${DEV_NAME}.m3u8"
         break
     fi 
     counter=$((counter + 1))
@@ -29,8 +32,6 @@ if [[ ! -e "/app/config.csv" ]];then
     [[ $DEV_NAME = "" ]] && exit 1
     SEG_TIME=${SEG_TIME:=5}
 fi    
-owner=`ls -ld | awk '{ print $3 }'`
-useradd -M -u ${owner} rstpusr
 
 python3 /app/printfps.py ${DEV_NAME} > /app/fps
 [[ $? -ne 0 ]] && exit 1
