@@ -16,8 +16,12 @@ while [[ -e "/app/config.csv" ]]; do
         break
     fi 
     counter=$((counter + 1))
-    echo "enough converter already running. wait 5 minute...[${counter}]"
-    sleep 600s
+    if [[ ${counter} -gt 15 ]];then
+        echo "no more converter seems needed, exit."
+        exit 0
+    fi
+    echo "enough converter already running. retry...[${counter}]"
+    sleep 60s
 done
 if [[ ! -e "/app/config.csv" ]];then
     echo "/app/config.csv not found."
