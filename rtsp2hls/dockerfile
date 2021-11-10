@@ -13,8 +13,8 @@ RUN python3 -m pip install --upgrade pip setuptools wheel && \
 python3 -m pip install numpy opencv-python==4.5.3.56 && \
 pip3 cache purge && \
 rm -rf ~/.cache/pip
+WORKDIR /out
 
 COPY src/ /app
 RUN chmod +x -R /app
-WORKDIR /out
 ENTRYPOINT ["/app/entrypoint.sh"]

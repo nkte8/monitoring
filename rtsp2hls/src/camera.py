@@ -32,7 +32,10 @@ class VideoCamera(object):
         if not self.rotate is None:
             image = cv2.rotate(image, self.rotate)
         image = cv2.putText(image, str(datetime.fromtimestamp(nowtime)),
+                (0, 18), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 196, 0), 4, cv2.LINE_AA)
+        image = cv2.putText(image, str(datetime.fromtimestamp(nowtime)),
                 (0, 18), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2)
+
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg
 #https://pystyle.info/opencv-change-contrast-and-brightness/
