@@ -1,0 +1,20 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
+RUN apt-get update && \
+apt-get install -y ffmpeg libgl1-mesa-dev libglib2.0-0 python3=3.8.2-0ubuntu2 python3-pip && \
+    apt-get autoremove && \ 
+    apt-get -y autoclean && \ 
+    apt-get clean && \ 
+    rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install --upgrade pip setuptools wheel && \
+python3 -m pip install numpy opencv-python==4.5.3.56 && \
+pip3 cache purge && \
+rm -rf ~/.cache/pip
+
+COPY src/ /app
+RUN chmod +x -R /app
+WORKDIR /out
+ENTRYPOINT ["/app/entrypoint.sh"]
