@@ -10,7 +10,7 @@ if __name__ == '__main__':
         cap = VideoCamera(f"rtsp://{addr}:8554/unicast")
         sleep(i)
         fps = cap.get_fps()
-        if fps <= 60:
+        if fps <= 60 and fps > 0:
             print(f'get value fps={fps}: printed stdout SEG_FPS={str(fps)}', file=sys.stderr)
             break
         print(f'invalid value fps={fps} continue...', file=sys.stderr)
