@@ -4,8 +4,8 @@ import numpy as np
 import cv2, sys
 
 rotatelist={ # list cv2 option
-    "Rotate_90":cv2.ROTATE_90_COUNTERCLOCKWISE,
-    "Rotate_270":cv2.ROTATE_90_CLOCKWISE,
+    "Rotate_90":cv2.ROTATE_90_CLOCKWISE,
+    "Rotate_270":cv2.ROTATE_90_COUNTERCLOCKWISE,
     "Rotate_180":cv2.ROTATE_180,
 }
 
