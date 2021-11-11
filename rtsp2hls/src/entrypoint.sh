@@ -8,14 +8,14 @@ while [[ -e "/app/config.csv" ]]; do
     for row in `cat /app/config.csv`;do
         dev_name=`echo ${row} | cut -d , -f 1`
         sleep $(($RANDOM % 10 * 10))
-        [[ $(find . -maxdepth 1 -name "${dev_name}.m3u8") = "" ]] && DEV_NAME=${dev_name}
+        [[ $(find . -maxdepth 1 -name ".${dev_name}.lock") = "" ]] && DEV_NAME=${dev_name}
         SEG_TIME=`echo ${row} | cut -d , -f 2`
         FRAME_ROTATE=`echo ${row} | cut -d , -f 3`
         [[ ${DEV_NAME} != "" ]] && break
     done
     if [[ ${DEV_NAME} != "" ]];then
         echo "DEV_NAME=$DEV_NAME, SEG_TIME=$SEG_TIME, FRAME_ROTATE=$FRAME_ROTATE"
-        su rstpusr -c "touch ${DEV_NAME}.m3u8"
+        su rstpusr -c "touch .${DEV_NAME}.lock"
         break
     fi 
     counter=$((counter + 1))
@@ -47,5 +47,5 @@ while [[ $counter -le 3 ]];do
     counter=$((counter + 1))
     echo "> ffmpeg process finished[$counter]: rc=$?"
 done
-rm -vf ${DEV_NAME}.m3u8
+rm -vf .${DEV_NAME}.lock
 exit 0
