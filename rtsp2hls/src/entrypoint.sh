@@ -43,7 +43,7 @@ if [[ ${SEG_FPS} = "" ]];then
 fi
 echo "device name: ${DEV_NAME}, ${FRAME_ROTATE:=Rotate_0}"
 while [[ $counter -le 3 ]];do
-    su rstpusr -c "python3 /app/rtsp2frame.py ${DEV_NAME} ${FRAME_ROTATE} | ffmpeg -r ${SEG_FPS} -i - -c:v libx264 -strftime 1 -strftime_mkdir 1 -hls_segment_filename ${DEV_NAME}/%Y-%m-%d/v%s.ts -sc_threshold 0 -g ${SEG_FPS} -keyint_min $(awk "BEGIN { print $SEG_FPS * $SEG_TIME }") -hls_time ${SEG_TIME} ${DEV_NAME}.m3u8"
+    su rstpusr -c "python3 /app/rtsp2frame.py ${DEV_NAME} ${FRAME_ROTATE} | ffmpeg -r ${SEG_FPS} -i - -c:v libx264 -strftime 1 -strftime_mkdir 1 -hls_segment_filename ${DEV_NAME}/%Y-%m-%d/v%H%M%S.ts -sc_threshold 0 -g ${SEG_FPS} -keyint_min $(awk "BEGIN { print $SEG_FPS * $SEG_TIME }") -hls_time ${SEG_TIME} ${DEV_NAME}.m3u8"
     counter=$((counter + 1))
     echo "> ffmpeg process finished[$counter]: rc=$?"
 done
