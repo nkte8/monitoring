@@ -1,0 +1,16 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
+RUN apt-get update && \
+apt-get install -y ffmpeg && \
+    apt-get autoremove && \ 
+    apt-get -y autoclean && \ 
+    apt-get clean && \ 
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /out
+
+COPY src/ /app
+RUN chmod +x -R /app
+ENTRYPOINT ["/app/entrypoint.sh"]
