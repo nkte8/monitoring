@@ -30,8 +30,8 @@ done
 echo "> concat video..."
 su rstpusr -c "ffmpeg -f concat -safe 0 -i /tmp/mylist.txt -vcodec copy -an ${TARGET_PATH}.mp4"
 rc=$?; [[ $rc -ne 0 ]] && exit $rc
-
-echo "> removing source video..."
+echo "> concat video finished."
+echo "> removing source segments..."
 rm -rf "${TARGET_PATH}"
 
 echo "> convert x10 and lighter"
@@ -39,4 +39,6 @@ su rstpusr -c "ffmpeg -i ${TARGET_PATH}.mp4 -vf setpts=PTS/16.0 -crf 30 ${TARGET
 rc=$?; [[ $rc -ne 0 ]] && exit $rc
 
 rm -f "${LOCK_FILE}"
+echo "> finish convert."
+
 exit 0
