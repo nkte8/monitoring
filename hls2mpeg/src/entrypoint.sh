@@ -19,7 +19,7 @@ if [[ $TARGET_PATH = "" ]];then
     echo "> no file to convert:)"
     exit 0
 fi
-touch ${LOCK_FILE}.lock
+touch ${LOCK_FILE}
 
 echo "> get file list..."
 filelist=$(find ${TARGET_PATH} -type f -name '*.ts')
