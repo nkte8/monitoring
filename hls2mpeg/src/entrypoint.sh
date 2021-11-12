@@ -22,21 +22,26 @@ fi
 touch ${LOCK_FILE}
 
 echo "> get file list..."
-filelist=$(find ${TARGET_PATH} -type f -name '*.ts')
+filelist=$(find ${TARGET_PATH} -type f -name '*.ts' | sort)
 for f in ${filelist};do
-    echo "file '$f'" >> /tmp/mylist.txt
+    ffmpeg -v error -i $f -f null -  >/dev/null 2>&1
+    if [[ $? -eq 0 ]];then
+        echo "file '$f'" >> /tmp/mylist.txt
+    fi
 done
 
 echo "> concat video..."
-su rstpusr -c "ffmpeg -f concat -safe 0 -i /tmp/mylist.txt -vcodec copy -an ${TARGET_PATH}-ts.mp4"
+su rstpusr -c "ffmpeg -f concat -nostdin -safe 0 -i /tmp/mylist.txt -vcodec copy -an ${TARGET_PATH}-ts.mp4"
 rc=$?; [[ $rc -ne 0 ]] && exit $rc
 echo "> concat video finished."
-echo "> removing source segments..."
-rm -rf "${TARGET_PATH}"
 
 echo "> convert x10 and lighter"
 su rstpusr -c "ffmpeg -i ${TARGET_PATH}-ts.mp4 -vf setpts=PTS/16.0 -crf 30 ${TARGET_PATH}.mp4"
 rc=$?; [[ $rc -ne 0 ]] && exit $rc
+echo "> convert video finished."
+
+echo "> removing source segments..."
+rm -rf "${TARGET_PATH}"
 
 rm -f "${LOCK_FILE}"
 echo "> finish convert."
