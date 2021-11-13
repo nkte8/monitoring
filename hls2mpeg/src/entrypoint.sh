@@ -21,12 +21,12 @@ if [[ $TARGET_PATH = "" ]];then
 fi
 touch ${LOCK_FILE}
 
-echo "> get file list..."
 filelist=$(find ${TARGET_PATH} -type f -name '*.ts' | sort)
+echo "> create file list... [/tmp/mylist.txt]"
 for f in ${filelist};do
     ffmpeg -v error -i $f -f null -  >/dev/null 2>&1
     if [[ $? -eq 0 ]];then
-        echo "file '$f'" >> /tmp/mylist.txt
+        echo "file '$f'" | tee /tmp/mylist.txt
     fi
 done
 
