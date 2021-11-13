@@ -36,12 +36,13 @@ rc=$?; [[ $rc -ne 0 ]] && exit $rc
 echo "> concat video finished."
 
 echo "> convert x10 and lighter"
-su rstpusr -c "ffmpeg -i ${TARGET_PATH}-ts.mp4 -vf setpts=PTS/16.0 -crf 30 ${TARGET_PATH}.mp4"
+su rstpusr -c "ffmpeg -i ${TARGET_PATH}-ts.mp4 -r 30 -vf setpts=PTS/20.0 -crf 30 ${TARGET_PATH}.mp4"
 rc=$?; [[ $rc -ne 0 ]] && exit $rc
 echo "> convert video finished."
 
 echo "> removing source segments..."
 rm -rf "${TARGET_PATH}"
+# rm -rf "${TARGET_PATH}-ts.mp4"
 
 rm -f "${LOCK_FILE}"
 echo "> finish convert."
