@@ -26,6 +26,10 @@ while [[ -e "/app/config.csv" ]]; do
     echo "enough converter already running. retry...[${counter}]"
     sleep 60s
 done
+
+trap "rm -vf .${DEV_NAME}.lock" EXIT
+trap "echo 'k8s terminate signal'; exit 0" 1 2 3 15
+
 counter=0
 if [[ ! -e "/app/config.csv" ]];then
     echo "/app/config.csv not found."
@@ -38,13 +42,11 @@ python3 /app/printfps.py ${DEV_NAME} > /app/fps
 if [[ $? -ne 0 ]];then
     echo "Video stream seems not active. wait a minute..."
     sleep 60s
-    rm -vf .${DEV_NAME}.lock
     exit 0
 fi 
 source /app/fps
 if [[ ${SEG_FPS} = "" ]];then
     echo "ERROR: Cannot get fps value by some problem..."
-    rm -vf .${DEV_NAME}.lock
     exit 20
 fi
 echo "device name: ${DEV_NAME}, ${FRAME_ROTATE:=Rotate_0}"
@@ -53,5 +55,4 @@ while [[ $counter -le 3 ]];do
     counter=$((counter + 1))
     echo "> ffmpeg process finished[$counter]: rc=$?"
 done
-rm -vf .${DEV_NAME}.lock
 exit 0
