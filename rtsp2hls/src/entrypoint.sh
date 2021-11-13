@@ -7,7 +7,7 @@ while [[ -e "/app/config.csv" ]]; do
     echo "read /app/config.csv" 
     for row in `cat /app/config.csv`;do
         dev_name=`echo ${row} | cut -d , -f 1`
-        sleep $(($RANDOM % 10 * 10))
+        sleep $(($RANDOM % 10 * 5))
         [[ $(find . -maxdepth 1 -name ".${dev_name}.lock") = "" ]] && DEV_NAME=${dev_name}
         SEG_TIME=`echo ${row} | cut -d , -f 2`
         FRAME_ROTATE=`echo ${row} | cut -d , -f 3`

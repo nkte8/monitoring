@@ -8,7 +8,7 @@ target_paths=$(find ${PWD} -mindepth 2 -maxdepth 2 -not -name "${except}" -type 
 
 for dir in ${target_paths}; do
     LOCK_FILE="$(dirname ${dir})/.$(basename ${dir}).lock"
-    sleep $(($RANDOM % 10 * 10))
+    sleep $(($RANDOM % 60 * 8))
     [[ -e ${LOCK_FILE} ]] && continue
     TARGET_PATH=${dir}
     break
