@@ -12,12 +12,13 @@ rotatelist={ # list cv2 option
 class VideoCamera(object):
     def __init__(self, url, rotate=""):
         self.rotate = rotatelist.get(rotate)
-        try:
-            self.video = cv2.VideoCapture(url)
-        except cv2.error:
-            sys.exit(1)
+        self.video = cv2.VideoCapture(url)
+
     def __del__(self):
         self.video.release()
+
+    def isOpened(self):
+        return self.video.isOpened()
 
     def get_fps(self):
         return self.video.get(cv2.CAP_PROP_FPS)

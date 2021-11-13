@@ -35,10 +35,16 @@ if [[ ! -e "/app/config.csv" ]];then
 fi    
 
 python3 /app/printfps.py ${DEV_NAME} > /app/fps
-[[ $? -ne 0 ]] && exit 1
+if [[ $? -ne 0 ]];then
+    echo "Video stream seems not active. wait a minute..."
+    sleep 60s
+    rm -vf .${DEV_NAME}.lock
+    exit 0
+fi 
 source /app/fps
 if [[ ${SEG_FPS} = "" ]];then
-    echo "ERR: SEG_FPS segment cannot get from rtsp stream."
+    echo "ERROR: Cannot get fps value by some problem..."
+    rm -vf .${DEV_NAME}.lock
     exit 20
 fi
 echo "device name: ${DEV_NAME}, ${FRAME_ROTATE:=Rotate_0}"
