@@ -21,7 +21,10 @@ class VideoCamera(object):
         return self.video.isOpened()
 
     def get_fps(self):
-        return self.video.get(cv2.CAP_PROP_FPS)
+        result = self.video.get(cv2.CAP_PROP_FPS)
+        if result > 60 or result < 1: 
+            result = None
+        return result
 
     def get_frame(self):
         rc = self.video.grab()
