@@ -38,8 +38,8 @@ su rstpusr -c "ffmpeg -f concat -nostdin -safe 0 -i /tmp/mylist.txt -vcodec copy
 rc=$?; [[ $rc -ne 0 ]] && exit $rc
 echo "> concat video finished."
 
-# echo "> removing source segments..."
-# rm -rf "${TARGET_PATH}"
+echo "> removing source segments..."
+rm -rf "${TARGET_PATH}"
 
 echo "> convert x10 and lighter"
 su rstpusr -c "ffmpeg -i ${TARGET_PATH}-ts.mp4 -r 30 -vf setpts=PTS/20.0 -crf 30 ${TARGET_PATH}.mp4"
