@@ -2,7 +2,7 @@
 stages:
   - build
 
-v4l2rtspserver:
+nginx-client:
   tags: [docker]
   stage: build
   script:
@@ -26,7 +26,7 @@ hls2mpeg:
     - docker build ./${CI_JOB_NAME} -t "${CI_REGISTRY_IMAGE}/${CI_JOB_NAME}:${CI_COMMIT_TAG:=latest}"
     - docker push "${CI_REGISTRY_IMAGE}/${CI_JOB_NAME}:${CI_COMMIT_TAG:=latest}"
 
-streaming-server:
+v4l2rtspserver:
   tags: [docker]
   stage: build
   script:

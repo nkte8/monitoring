@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<head>
+    <title>streaming-monitor</title>
+    <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            gap: 4px 4px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body bgcolor="222">
+    <div class="container">
+        <video id="edge01" class="video-js" width="640" height="480" controls autoplay muted preload="auto"
+            data-setup="{}" playsinline>
+            <source src="./mount/edge01.m3u8" type="application/x-mpegURL" />
+        </video>
+        <video id="edge02" class="video-js" width="640" height="480" controls autoplay muted preload="auto"
+            data-setup="{}" playsinline>
+            <source src="./mount/edge02.m3u8" type="application/x-mpegURL" />
+        </video>
+        <video id="sandbox" class="video-js" width="640" height="480" controls autoplay muted preload="auto"
+            data-setup="{}" playsinline>
+            <source src="./mount/sandbox.m3u8" type="application/x-mpegURL" />
+        </video>
+    </div>
+
+    <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script>
+</body>
