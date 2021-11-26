@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitor
+  template:
+    metadata:
+      labels:
+        app: monitor
+    spec:
+      containers:
+        - name: monitor
+          imagePullPolicy: Always
+          image: registry.neko.lab:5005/root/monitoring/nginx-client
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: video
+              mountPath: /var/www/html/mount
+      volumes:
+        - name: video
+          glusterfs:
+            endpoints: glusterfs-cluster
+            path: /gvol/Data/camera
+            readOnly: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitor
+  annotations:
+    metallb.universe.tf/address-pool: monitor
+spec:
+  type: LoadBalancer
+  selector:
+    app: monitor
+  ports:
+    - protocol: TCP
+      targetPort: 80
+      port: 80
+      name: http

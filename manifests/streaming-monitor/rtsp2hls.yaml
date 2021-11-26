@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rtsp2hls
+spec:
+  replicas: 3 # set count of cameras
+  selector:
+    matchLabels:
+      app: rtsp2hls
+  template:
+    metadata:
+      labels:
+        app: rtsp2hls
+    spec:
+      containers:
+        - name: rtsp2hls
+          imagePullPolicy: Always
+          image: registry.neko.lab:5005/root/monitoring/rtsp2hls
+          resources:
+            requests:
+              cpu: 1500m
+              memory: 80Mi
+          volumeMounts:
+            - name: video-out
+              mountPath: /out
+            - mountPath: /app/config.csv
+              name: rtsp2hls-conf
+              subPath: config.csv
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/app/sigterm.sh"]
+      volumes:
+        - name: video-out
+          glusterfs:
+            endpoints: glusterfs-cluster
+            path: /gvol/Data/camera
+            readOnly: false
+        - name: rtsp2hls-conf
+          configMap:
+            name: rtsp2hls-conf
