@@ -9,7 +9,7 @@ kubectl apply -k ./monitoring/manifests/streaming-monitor
 ## config.csvについて  
 次のように設定
 ```csv
-<IPアドレスorDNS名>,<各セグメントの動画時間>,<映像の回転設定>
+<デバイス名(DNS名)>,<各セグメントの動画時間>,<映像の回転設定>,<IPアドレス・オプション>
 ```
 映像の回転設定は以下のいずれかを指定すること  
 - Rotate_0  
@@ -22,8 +22,7 @@ kubectl apply -k ./monitoring/manifests/streaming-monitor
     - 時計回り 270度  
 
 ### 設定例  
-edge01はDNSサーバによってコンテナ内から192.168.3.31にアクセスできる前提。  
 ```csv
-edge01,5,Rotate_0
+edge01,5,Rotate_0,192.168.3.31
 192.168.3.32,10,Rotate_180
 ```  

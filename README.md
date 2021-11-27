@@ -2,7 +2,7 @@
 
 サーバのモニタリングに関するプロダクトの学習・開発を目的としたプロジェクトです。
 
-## streaming-serverについて  
+## streaming-monitorについて  
 
 RaspberryPiのカメラモジュールを用いた、監視カメラ・映像配信サービスです。
 
@@ -11,11 +11,15 @@ RaspberryPi上にk8s環境およびgitlabサーバがあること、カメラモ
 
 1) gitlab環境に本プロジェクトをcloneし、`gitlab-ci.yaml`によってコンテナをビルドする。  
 
-2) すべてのyamlファイル内の`**.template.spec.containers.image`を、各々のコンテナレジストリに設定し直す。
+2) エッジデバイスに`monitoring/manifests/client/docker-compose.yaml`を配布し、起動する。
 
-3) カメラモジュールのあるノードに、k8s上でnodeラベル`device: camera`を付与する
+3) すべてのyamlファイル内の`**.template.spec.containers.image`を、各々のコンテナレジストリに設定し直す。
 
-4) サービスを起動する
+4) すべてのyamlファイル内の`volumes.name:video-out`および`volumes.name:video`の設定を各自クラスタの設定に合わせる。
+
+5) config.csvおよびrtsp2hlsマニフェストのDeploymentのレプリカ数をエッジデバイスと一致させる。
+
+6) サービスを起動する
 ```sh
-kubectl apply -k ./monitor/manifests/streaming-server/base/
+kubectl apply -k ./monitoring/manifests/streaming-monitor
 ```
