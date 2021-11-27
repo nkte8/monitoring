@@ -1,0 +1,19 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
+RUN apt-get update && apt-get install -y git cmake make build-essential && \ 
+    apt-get autoremove && \ 
+    apt-get -y autoclean && \ 
+    apt-get clean && \ 
+    rm -rf /var/lib/apt/lists/*
+
+RUN git clone -b v0.2.4 https://github.com/mpromonet/v4l2rtspserver.git && \ 
+    cd v4l2rtspserver && \
+    cmake . && \ 
+    make && \ 
+    make install && \ 
+    rm -rf ./v4l2rtspserver
+
+EXPOSE 8554
+ENTRYPOINT ["v4l2rtspserver"]

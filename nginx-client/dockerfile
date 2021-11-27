@@ -1,0 +1,11 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y nginx && \
+    apt-get autoremove && \ 
+    apt-get -y autoclean && \ 
+    apt-get clean && \ 
+    rm -rf /var/lib/apt/lists/*
+
+COPY html/ /var/www/html/
+ENTRYPOINT /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf
