@@ -9,7 +9,6 @@ services:
     devices:
       - /dev/video0
     restart: always
-    privileged: true
     logging:
       driver: json-file
       options:
